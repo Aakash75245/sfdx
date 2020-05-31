@@ -1,6 +1,6 @@
 import { SfdxCommand,flags, FlagsConfig } from '@salesforce/command';
 import { Messages,Connection,Org } from '@salesforce/core';
-//import {} from ''
+import {ApexExecuteCommand} from 'salesforce-alm/dist/commands/force/apex/execute'
 import * as simplegit from 'simple-git/promise';
 
 const git = simplegit();
@@ -25,9 +25,14 @@ export default class pull extends SfdxCommand {
 
     releasename: flags.string({
         char: 'n',
-        required: true,
+        required: false,
         description: 'App Prefix goes here'
     }),
+    targetname: flags.string({
+      char: 't',
+      required: false,
+      description: 'App Prefix goes here'
+  }),
 
     verbose: flags.builtin()
 }
@@ -46,7 +51,8 @@ export default class pull extends SfdxCommand {
     try{
       await git.raw(['checkout','FETCH_HEAD','--',stashrefrence]);
       this.ux.log(` File ${stashrefrence} pulled from Git `);
-
+      this.ux.log('lets execute apex class which we just pulled ');      
+      await ApexExecuteCommand.run(['-u',this.flags.targetname,'-f',stashrefrence]);
     }
     catch(error)
   {
