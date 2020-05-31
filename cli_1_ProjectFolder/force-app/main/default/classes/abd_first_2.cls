@@ -3,5 +3,7 @@ public class abc_first_2{
     {
         System.debug('Heyyyyyyyyyyyyy ! Aakash How are you ');
         System.debug('Heyyyyyyyyyyyyy ! Aakash How are you ');
+        System.debug('Heyyyyyyyyyyyyy ! Aakash How are you ');
+        System.debug('Heyyyyyyyyyyyyy ! Aakash How are you ');
     }
 }
