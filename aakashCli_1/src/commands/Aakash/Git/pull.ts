@@ -1,5 +1,6 @@
 import { SfdxCommand,flags, FlagsConfig } from '@salesforce/command';
 import { Messages,Connection,Org } from '@salesforce/core';
+//import {} from ''
 import * as simplegit from 'simple-git/promise';
 
 const git = simplegit();
@@ -38,9 +39,22 @@ export default class pull extends SfdxCommand {
         let res1: any = await this.conn.query(query);
         let stashrefrence = res1.records[0].AA_myPackages__Reference__c;
         this.ux.log('Refrence is ' + stashrefrence);
+        //let gitcommand = `FETCH_HEAD -- ${stashrefrence}`;
     //let message = 'Pushing changes through Plugins';
-    git.checkout('master')
-                .then(() => git.pull('origin', 'master', stashrefrence))
+    //git.raw(['fetch']);
+    await git.fetch([]);
+    try{
+      await git.raw(['checkout','FETCH_HEAD','--',stashrefrence]);
+      this.ux.log(` File ${stashrefrence} pulled from Git `);
+
+    }
+    catch(error)
+  {
+    this.ux.log('Error here is ' + error);
+  }
+  
+    //.then(() => git.raw([` -- ${stashrefrence}`]))
+    //git.raw([gitcommand]);
     //await git.raw(['add','.']);
     //let res : any = await git.commit(message);
     //this.ux.log(res);
